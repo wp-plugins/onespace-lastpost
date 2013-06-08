@@ -17,11 +17,13 @@ Veja descrição em portugues em: http://onespace.com.br/lastpost/
 This plugin provides you with a shortcode that returns the latest posts from specifics categories or post_types, you can choose how many posts is to be show or what kind of information you can get from posts.
 
 Arguments:
-1. id: You can use any number of post categories ids separeted by commas
-1. num: the number of posts to return for wich categorie id
-1. info: this is where goes all the printing information.
+
+1. id - You can use any number of post categories ids separeted by commas
+1. num - the number of posts to return for wich categorie id
+1. info - this is where goes all the printing information
 
 Info printing arguments:
+
 1. thumb: returns the post's featured image, you must specify the width of the thumb after ':', has a link to the post
 1. title: returns the title, has a link to the post
 1. excerpt: returns the first lines from you post you can specify the lenght of the text to show and a subtext. excerpt:LENGTH:SUB-TEXT, has a link to the post
@@ -77,6 +79,11 @@ Go to Admin > posts > categories, mouse over the category that you need, and che
 
 == Screenshots ==
 
+1. Plugin used on a post.
+
+2. Shortcode used.
+
+3. Plugin used on a widget, need additional plugin to make possible the use of shortcodes on widget.
 
 == Changelog ==
 
