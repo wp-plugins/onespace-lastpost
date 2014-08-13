@@ -1,0 +1,1 @@
+- Info excerpt now respects the <!--more--> tag, content always show the full content

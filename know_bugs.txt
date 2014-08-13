@@ -1,0 +1,1 @@
+- quando o limite do excerpt bate encima de uma palavra acentuada, a mesma quebra por quebrar os bytes
