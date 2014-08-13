@@ -98,12 +98,16 @@ class Os_lastpost_printer{
 
 		// save the current post for recovery later
 		global $post;
+		global $more;
 		$save_post = $post;
+		$save_more = $more;
+
 
 		foreach ($this->querys_for_print as $q) {
 			$this->html .= '<ul>';
 			if ($q->have_posts()): while($q->have_posts()):	$q->the_post();
 					$post = $q->post;
+					$more = 0; // respect the <!--more--> tag
 					$this->html .= '<li>';
 					$this->makeHtmlWithInfo();
 					$this->html .= '</li>';
@@ -114,7 +118,7 @@ class Os_lastpost_printer{
 		$this->html .= '</div>';
 
 		$post = $save_post;
-
+		$more = $save_more;
 	}
 
 	private function makeHtmlWithInfo() {
@@ -130,7 +134,7 @@ class Os_lastpost_printer{
 			}
 
 			if(strpos($info, 'excerpt') !== false){
-				$this->html .= $this->getTrimContentFromInfo($info);
+				$this->html .= $this->getExcerptFromInfo($info);
 			}
 
 			if(strpos($info, 'content') !== false){
@@ -152,13 +156,17 @@ class Os_lastpost_printer{
 		}
 	}
 
-	private function getTrimContentFromInfo($string) {
+	private function getExcerptFromInfo($string) {
 		$options = explode(':', $string);
-		if (count($options) > 1){
+		if (count($options) > 2){
 			$max_char = intval($options[1]);
 			$text = ($options[2]);
-
 			return $this->trimContent($max_char, $text);
+
+		} else if (count($options) > 1){
+			$max_char = intval($options[1]);
+			return $this->trimContent($max_char);
+
 		} else {
 			return $this->trimContent();
 		}
@@ -166,17 +174,19 @@ class Os_lastpost_printer{
 	}
 
 	private function trimContent($max_char = 60, $text = ' ...Read more') {
-		$content = get_the_content();
-		if (strlen($content) > $max_char - strlen($text)){
-			$content = substr($content, 0, $max_char) . $text;
+		$excerpt = get_the_content($text);
+		$excerpt = strip_tags($excerpt);
+		if (strlen($excerpt) > $max_char - strlen($text)){
+			$excerpt = substr($excerpt, 0, $max_char) . $text;
 		}
 
-		$content = strip_tags($content);
 
-		return '<p><a href="' . get_permalink() . '">' . $content . '</a></p>';
+		return '<p><a href="' . get_permalink() . '">' . $excerpt . '</a></p>';
 	}
 
 	private function getFullContentForInfo($string){
+		global $more;
+		$more = 1; // alwayes show full content
 		$content = get_the_content();
 		$content = apply_filters('the_content', $content);
 		return $content;
